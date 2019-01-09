@@ -1,28 +1,23 @@
-import {CHANGE_INPUT_VALUE, ADD_TODO_ITEM, DELETE_TODO_ITEM} from './actionTypes.js';
 
 const defaultState = {
-	inputVal: '',
+	inputValue: '',
 	list: []
-};
-
+}
 
 export default (state = defaultState, action) => {
-	if(action.type === CHANGE_INPUT_VALUE) {
-		const newsState = JSON.parse(JSON.stringify(state));
-		newsState.inputVal = action.value;
-		return newsState;
+	const newState = JSON.parse(JSON.stringify(state));
+	switch(action.type) {
+		case 'change_input_value': 		
+				newState.inputValue = action.value;
+			return newState;
+		case 'add_item': 
+				newState.list.push(newState.inputValue);
+				newState.inputValue = '';
+				return newState;
+		case 'delete_item': 
+				newState.list.splice(action.index, 1)
+				return newState;
+		default:
+			return state
 	}
-	if(action.type === ADD_TODO_ITEM) {
-		const newsState = JSON.parse(JSON.stringify(state));
-		newsState.list.push(newsState.inputVal);
-		newsState.inputVal = '';
-		return newsState;
-	}
-	if(action.type === DELETE_TODO_ITEM) {
-		const newsState = JSON.parse(JSON.stringify(state));
-		newsState.list.splice(action.index, 1);
-		return newsState
-	}
-
-	return state
 }
